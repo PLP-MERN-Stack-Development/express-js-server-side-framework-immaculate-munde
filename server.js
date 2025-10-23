@@ -13,19 +13,16 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(logger);
 
-// ✅ Routes
-app.use("/api/products", productRoutes);
-// ✅ Authentication Middleware for protected routes
-app.use('/api/products', auth);
-
-
-// ✅ Global Error Handler
-app.use(errorHandler);
+// ✅ Authentication + Routes
+app.use("/api/products", auth, productRoutes);
 
 // ✅ Root route
 app.get("/", (req, res) => {
   res.send("Hello World! Welcome to the Express.js API 🚀");
 });
+
+// ✅ Global Error Handler — Always last!
+app.use(errorHandler);
 
 // ✅ Start Server
 app.listen(PORT, () => {
