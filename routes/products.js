@@ -10,10 +10,32 @@ let products = [
   { id: uuidv4(), name: "Shoes", description: "Running shoes", price: 80, category: "Fashion", inStock: false },
 ];
 
-// ✅ GET all products
+// ✅ GET all products (with filtering and pagination)
 router.get("/", (req, res) => {
-  res.json(products);
+  const { category, page = 1, limit = 5 } = req.query;
+
+  let filtered = [...products];
+
+  // Filter by category
+  if (category) {
+    filtered = filtered.filter((p) =>
+      p.category.toLowerCase() === category.toLowerCase()
+    );
+  }
+
+  // Pagination
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + parseInt(limit);
+  const paginated = filtered.slice(startIndex, endIndex);
+
+  res.json({
+    total: filtered.length,
+    page: parseInt(page),
+    limit: parseInt(limit),
+    data: paginated,
+  });
 });
+
 
 // ✅ GET one product by ID
 router.get("/:id", (req, res) => {
@@ -63,5 +85,30 @@ router.delete("/:id", (req, res) => {
   products.splice(index, 1);
   res.status(204).send();
 });
+
+// ✅ Search products by name
+router.get("/search", (req, res) => {
+  const { name } = req.query;
+  if (!name) {
+    return res.status(400).json({ message: "Please provide a search term" });
+  }
+
+  const results = products.filter((p) =>
+    p.name.toLowerCase().includes(name.toLowerCase())
+  );
+
+  res.json({ count: results.length, results });
+});
+
+// ✅ Get product statistics (count by category)
+router.get("/stats", (req, res) => {
+  const stats = products.reduce((acc, product) => {
+    acc[product.category] = (acc[product.category] || 0) + 1;
+    return acc;
+  }, {});
+
+  res.json({ totalProducts: products.length, stats });
+});
+
 
 module.exports = router;
