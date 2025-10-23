@@ -1,62 +1,79 @@
-# Express.js RESTful API Assignment
+# Express.js RESTful API – Week 2 Assignment
 
-This assignment focuses on building a RESTful API using Express.js, implementing proper routing, middleware, and error handling.
+## 🚀 Overview
+This project is a RESTful API built with **Express.js**, implementing CRUD operations for a **products** resource.  
+It includes middleware for logging, authentication, validation, and global error handling.
 
-## Assignment Overview
+---
 
-You will:
-1. Set up an Express.js server
-2. Create RESTful API routes for a product resource
-3. Implement custom middleware for logging, authentication, and validation
-4. Add comprehensive error handling
-5. Develop advanced features like filtering, pagination, and search
+## 🧠 Features
+- CRUD operations for products (GET, POST, PUT, DELETE)
+- Filtering by category
+- Pagination and search functionality
+- Custom logger and authentication middleware
+- Comprehensive error handling
 
-## Getting Started
+---
 
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Install dependencies:
-   ```
-   npm install
-   ```
-4. Run the server:
-   ```
-   npm start
-   ```
+## ⚙️ Setup & Installation
 
-## Files Included
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/PLP-MERN-Stack-Development/express-js-server-side-framework-immaculate-munde.git
+cd express-js-server-side-framework-immaculate-munde
 
-- `Week2-Assignment.md`: Detailed assignment instructions
-- `server.js`: Starter Express.js server file
-- `.env.example`: Example environment variables file
+2️⃣ Install dependencies
+npm install
 
-## Requirements
+3️⃣ Create .env file
+Create a .env file in your root folder:
+PORT=3000
+API_KEY=12345secretapikey
+NODE_ENV=development
 
-- Node.js (v18 or higher)
-- npm or yarn
-- Postman, Insomnia, or curl for API testing
+4️⃣ Start the server
+npm start
+The server will run on:
+👉 http://localhost:3000
 
-## API Endpoints
+🧩 API Endpoints
+Method	Endpoint	Description
+GET	/api/products	Get all products
+GET	/api/products/:id	Get a specific product
+POST	/api/products	Create a new product
+PUT	/api/products/:id	Update an existing product
+DELETE	/api/products/:id	Delete a product
+GET	/api/products?category=Electronics	Filter by category
+GET	/api/products?search=Laptop	Search by name
+GET	/api/products?page=2&limit=5	Pagination
 
-The API will have the following endpoints:
+🔐 Authentication
+All /api/products routes are protected using an API key.
 
-- `GET /api/products`: Get all products
-- `GET /api/products/:id`: Get a specific product
-- `POST /api/products`: Create a new product
-- `PUT /api/products/:id`: Update a product
-- `DELETE /api/products/:id`: Delete a product
+Include the following header in your requests:
+x-api-key: your_api_key_here
 
-## Submission
+🧪 Example Requests (using curl)
+Get All Products
+curl -H "x-api-key: 12345secretapikey" http://localhost:3000/api/products
 
-Your work will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+Add a New Product
+curl -X POST http://localhost:3000/api/products \
+-H "Content-Type: application/json" \
+-H "x-api-key: 12345secretapikey" \
+-d '{
+  "name": "Phone",
+  "description": "Smartphone with 5G",
+  "price": 899,
+  "category": "Electronics",
+  "inStock": true
+}'
 
-1. Complete all the required API endpoints
-2. Implement the middleware and error handling
-3. Document your API in the README.md
-4. Include examples of requests and responses
+🧾 Error Handling
+Errors are handled globally with meaningful messages and appropriate HTTP status codes.
 
-## Resources
-
-- [Express.js Documentation](https://expressjs.com/)
-- [RESTful API Design Best Practices](https://restfulapi.net/)
-- [HTTP Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) 
+Example response:
+{
+  "message": "Product not found",
+  "stack": "🥞"
+}
